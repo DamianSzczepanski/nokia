@@ -6,13 +6,13 @@ var Schema = mongoose.Schema;
 var DeviceSchema = new Schema ( {
   name: {
     type: String,
-    required: true,
+    required: false,
     max: 30,
   },
   numLeft: {
     type: Number,
      min: 0,
-     required: true
+     required: false
   },
   description: {
     type: String,

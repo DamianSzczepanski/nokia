@@ -1,13 +1,14 @@
 var Device = require('../models/device');
 const multer = require('multer');
-var path = require('path')
+//var path = require('path')
+var Device = require('../models/device');
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, './uploads/');
+    cb(null, './Upload');
   },
   filename: function(req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
+   cb(null,Date.now() + file.originalname);
   }
 });
 
@@ -26,7 +27,7 @@ const upload = multer({
     fileSize: 1024 * 1024 * 5
   },
   fileFilter: fileFilter
-});
+}).single('deviceImage');
 
 
 
@@ -45,20 +46,28 @@ exports.device_details_get = (function(req, res) {
 })
 
 exports.device_post =  function(req, res) {
-  //var device = new Device();
-  //(req.body.name) ? device.name = req.body.name : null;
-  //(req.body.numLeft) ? device.numLeft = req.body.numLeft : null;
-  //(req.body.description) ? device.description= req.body.description : null;
-  //console.log(req.file);
+
+ var device = new Device();
+  (req.body.name) ? device.name = req.body.name : null;
+  (req.body.numLeft) ? device.numLeft = req.body.numLeft : null;
+  (req.body.description) ? device.description= req.body.description : null;
+  console.log(req.body.name);
+  //upload(req,res,function(err) {
+//    if (err){
+    //  return res.end("Error uploading file");
+  //  }
+  //  res.end("file is uploaded");
+//  }) ;
   //if(req.file === null) {return res.send(400)}
-  const newDevice = new Device({
-    name: req.body.name,
-    numLeft: req.body.numLeft,
-    //deviceImage: req.file.path
-  });
+//  const newDevice = new Device({
+  //  name: req.body.name,
+    //numLeft: req.body.numLeft,
+    //description:req.body.description,
+  //  deviceImage: req.file.path
+///  });
   //(req.body.deviceImage) ? device.deviceImage = req.file.path : null;
   //console.log("+" + req.file.path);
-  newDevice.save(function(err, result){
+  device.save(function(err, result){
     if(err) {return res.send(err);}
     res.json(result);
   });
@@ -70,6 +79,7 @@ exports.device_put = function(req,res) {
     (req.body.name) ? device.name = req.body.name : null;
     (req.body.numLeft) ? device.numLeft= req.body.numLeft : null;
     (req.body.description) ? device.description= req.body.description : null;
+    device.deviceImage=req.file.path;
 
       device.save(function(err, result) {
         if (err){ return res.send(err);}

@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const multer = require('multer');
 
 var device_controller = require('../controllers/deviceController.js');
 
